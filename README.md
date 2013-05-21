@@ -1,4 +1,9 @@
-#Usage#
+TZSheetView
+===========
+
+TZSheetView is a collection view to help you format your game/app information.And it's implemented through UITableView style.
+
+##Usage##
 
 ###Property `configText` is foramtted as belows:###
 

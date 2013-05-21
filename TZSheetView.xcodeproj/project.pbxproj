@@ -16,6 +16,14 @@
 		CB1AA561174B581700EB572F /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = CB1AA560174B581700EB572F /* Default.png */; };
 		CB1AA563174B581700EB572F /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CB1AA562174B581700EB572F /* Default@2x.png */; };
 		CB1AA565174B581700EB572F /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CB1AA564174B581700EB572F /* Default-568h@2x.png */; };
+		CB1AA571174B582C00EB572F /* icon_coal@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CB1AA56C174B582C00EB572F /* icon_coal@2x.png */; };
+		CB1AA572174B582C00EB572F /* icon_food@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CB1AA56D174B582C00EB572F /* icon_food@2x.png */; };
+		CB1AA573174B582C00EB572F /* icon_gem.png in Resources */ = {isa = PBXBuildFile; fileRef = CB1AA56E174B582C00EB572F /* icon_gem.png */; };
+		CB1AA574174B582C00EB572F /* icon_gold@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CB1AA56F174B582C00EB572F /* icon_gold@2x.png */; };
+		CB1AA575174B582C00EB572F /* icon_iron@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CB1AA570174B582C00EB572F /* icon_iron@2x.png */; };
+		CB1AA579174B583400EB572F /* TZSheetView.m in Sources */ = {isa = PBXBuildFile; fileRef = CB1AA578174B583400EB572F /* TZSheetView.m */; };
+		CB1AA57C174B583F00EB572F /* TZSheetViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CB1AA57B174B583F00EB572F /* TZSheetViewController.m */; };
+		CB1AA57E174B64DC00EB572F /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = CB1AA57D174B64DC00EB572F /* README.md */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -32,6 +40,16 @@
 		CB1AA560174B581700EB572F /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
 		CB1AA562174B581700EB572F /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
 		CB1AA564174B581700EB572F /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
+		CB1AA56C174B582C00EB572F /* icon_coal@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_coal@2x.png"; sourceTree = "<group>"; };
+		CB1AA56D174B582C00EB572F /* icon_food@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_food@2x.png"; sourceTree = "<group>"; };
+		CB1AA56E174B582C00EB572F /* icon_gem.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_gem.png; sourceTree = "<group>"; };
+		CB1AA56F174B582C00EB572F /* icon_gold@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_gold@2x.png"; sourceTree = "<group>"; };
+		CB1AA570174B582C00EB572F /* icon_iron@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_iron@2x.png"; sourceTree = "<group>"; };
+		CB1AA577174B583400EB572F /* TZSheetView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TZSheetView.h; sourceTree = "<group>"; };
+		CB1AA578174B583400EB572F /* TZSheetView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TZSheetView.m; sourceTree = "<group>"; };
+		CB1AA57A174B583F00EB572F /* TZSheetViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TZSheetViewController.h; sourceTree = "<group>"; };
+		CB1AA57B174B583F00EB572F /* TZSheetViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TZSheetViewController.m; sourceTree = "<group>"; };
+		CB1AA57D174B64DC00EB572F /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.md; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -51,6 +69,7 @@
 		CB1AA542174B581700EB572F = {
 			isa = PBXGroup;
 			children = (
+				CB1AA57D174B64DC00EB572F /* README.md */,
 				CB1AA554174B581700EB572F /* TZSheetView */,
 				CB1AA54D174B581700EB572F /* Frameworks */,
 				CB1AA54C174B581700EB572F /* Products */,
@@ -78,6 +97,10 @@
 		CB1AA554174B581700EB572F /* TZSheetView */ = {
 			isa = PBXGroup;
 			children = (
+				CB1AA57A174B583F00EB572F /* TZSheetViewController.h */,
+				CB1AA57B174B583F00EB572F /* TZSheetViewController.m */,
+				CB1AA576174B583400EB572F /* TZSheetView */,
+				CB1AA56B174B582C00EB572F /* resources */,
 				CB1AA55D174B581700EB572F /* TZAppDelegate.h */,
 				CB1AA55E174B581700EB572F /* TZAppDelegate.m */,
 				CB1AA555174B581700EB572F /* Supporting Files */,
@@ -97,6 +120,27 @@
 				CB1AA564174B581700EB572F /* Default-568h@2x.png */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		CB1AA56B174B582C00EB572F /* resources */ = {
+			isa = PBXGroup;
+			children = (
+				CB1AA56C174B582C00EB572F /* icon_coal@2x.png */,
+				CB1AA56D174B582C00EB572F /* icon_food@2x.png */,
+				CB1AA56E174B582C00EB572F /* icon_gem.png */,
+				CB1AA56F174B582C00EB572F /* icon_gold@2x.png */,
+				CB1AA570174B582C00EB572F /* icon_iron@2x.png */,
+			);
+			path = resources;
+			sourceTree = "<group>";
+		};
+		CB1AA576174B583400EB572F /* TZSheetView */ = {
+			isa = PBXGroup;
+			children = (
+				CB1AA577174B583400EB572F /* TZSheetView.h */,
+				CB1AA578174B583400EB572F /* TZSheetView.m */,
+			);
+			path = TZSheetView;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -155,6 +199,12 @@
 				CB1AA561174B581700EB572F /* Default.png in Resources */,
 				CB1AA563174B581700EB572F /* Default@2x.png in Resources */,
 				CB1AA565174B581700EB572F /* Default-568h@2x.png in Resources */,
+				CB1AA571174B582C00EB572F /* icon_coal@2x.png in Resources */,
+				CB1AA572174B582C00EB572F /* icon_food@2x.png in Resources */,
+				CB1AA573174B582C00EB572F /* icon_gem.png in Resources */,
+				CB1AA574174B582C00EB572F /* icon_gold@2x.png in Resources */,
+				CB1AA575174B582C00EB572F /* icon_iron@2x.png in Resources */,
+				CB1AA57E174B64DC00EB572F /* README.md in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -167,6 +217,8 @@
 			files = (
 				CB1AA55B174B581700EB572F /* main.m in Sources */,
 				CB1AA55F174B581700EB572F /* TZAppDelegate.m in Sources */,
+				CB1AA579174B583400EB572F /* TZSheetView.m in Sources */,
+				CB1AA57C174B583F00EB572F /* TZSheetViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -196,7 +248,8 @@
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				COPY_PHASE_STRIP = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -211,6 +264,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
 				ONLY_ACTIVE_ARCH = YES;
+				PROVISIONING_PROFILE = "";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -228,7 +282,8 @@
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				COPY_PHASE_STRIP = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
@@ -236,6 +291,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
+				PROVISIONING_PROFILE = "";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
