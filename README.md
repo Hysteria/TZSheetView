@@ -33,4 +33,3 @@ Vertical Header 1 | AlignLeft (x:0,y:0)     |    AlignCenter (x:1,y:0)    |    (
 Vertical Header 2 | AlignLeft (x:0,y:1)     |    AlignCenter (x:1,y:1)    |    (x:2,y:1) AlignRight
 Vertical Header 3 | AlignLeft (x:0,y:2)     |    AlignCenter (x:1,y:2)    |    (x:2,y:2) AlignRight
 
-
