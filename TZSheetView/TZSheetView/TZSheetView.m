@@ -40,7 +40,6 @@
         _textColor = [UIColor blackColor];
         
         _font = [UIFont systemFontOfSize:[UIFont systemFontSize]];
-    
     }
     return self;
 }
