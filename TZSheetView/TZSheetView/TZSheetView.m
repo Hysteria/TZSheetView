@@ -27,24 +27,20 @@
     if (self) {
         [self setBackgroundColor:[UIColor clearColor]];
         
+        
 #if DEBUG_ENVIROMENT
-        [self.layer setBorderColor:[UIColor cyanColor].CGColor];
+        [self.layer setBorderColor:[UIColor lightGrayColor].CGColor];
         [self.layer setBorderWidth:1.0];
-//        [self.layer setCornerRadius:5.0];
-        [self setClipsToBounds:YES];
+        [self.layer setCornerRadius:3.0];
+    
 #endif
-        _alignment = TZSheetViewTextAlignmentCenter;
+        _alignment = TZSheetContentAlignmentCenter;
         _contentEdgeInsets = UIEdgeInsetsMake(2, 2, 2, 2);
         _contentSpacing = 10;
         _textColor = [UIColor blackColor];
         
         _font = [UIFont systemFontOfSize:[UIFont labelFontSize]];
-        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
-            _contentEdgeInsets = UIEdgeInsetsMake(_contentEdgeInsets.top/2, _contentEdgeInsets.left/2, _contentEdgeInsets.bottom/2, _contentEdgeInsets.right/2);
-            _contentSpacing /= 2;
-        }
-        
-        
+    
     }
     return self;
 }
@@ -63,28 +59,31 @@
     
     CGFloat componentsWidth = 0.0;
     for (int i = 0; i < _componentCount; i++) {
-        UIView *view = [self viewWithTag:i*kEntryComponentTagIncre+1];
+        UIView *view = [self viewWithTag:i * kEntryComponentTagIncre + 1];
         assert([view isKindOfClass:[UILabel class]] || [view isKindOfClass:[UIImageView class]]);
         CGRect viewFrame = [view frame];
         componentsWidth += viewFrame.size.width;
     }
     componentsWidth += (_componentCount - 1) * _contentSpacing;
     
-    CGRect rect = _contentFrame;
+    CGFloat originX = _contentFrame.origin.x;
+    CGFloat originY = _contentFrame.origin.y;
     switch (_alignment) {
-        case TZSheetViewTextAlignmentLeft:
-            rect = _contentFrame;
+        case TZSheetContentAlignmentLeftTop:
+        case TZSheetContentAlignmentLeftCenter:
+        case TZSheetContentAlignmentLeftBottom:
+            
             break;
-        case TZSheetViewTextAlignmentCenter:
-        {
-           
-            rect = CGRectMake(frame.size.width/2 - componentsWidth/2, _contentFrame.origin.y, 0, 0);
-        }
+        case TZSheetContentAlignmentCenterTop:
+        case TZSheetContentAlignmentCenter:
+        case TZSheetContentAlignmentCenterBottom:
+            originX = frame.size.width/2 - componentsWidth/2;
             break;
-        case TZSheetViewTextAlignmentRight:
-        {
-            rect = CGRectMake(frame.size.width - componentsWidth, _contentFrame.origin.y, 0, 0);
-        }
+        case TZSheetContentAlignmentRightTop:
+        case TZSheetContentAlignmentRightCenter:
+        case TZSheetContentAlignmentRightBottom:
+            originX = frame.size.width - componentsWidth;
+            break;
         default:
             break;
     }
@@ -93,22 +92,38 @@
         UIView *view = [self viewWithTag:i*kEntryComponentTagIncre+1];
         assert([view isKindOfClass:[UILabel class]] || [view isKindOfClass:[UIImageView class]]);
         CGRect viewFrame = [view frame];
+        
+        switch (_alignment) {
+            case TZSheetContentAlignmentLeftTop:
+            case TZSheetContentAlignmentCenterTop:
+            case TZSheetContentAlignmentRightTop:
+                break;
+            case TZSheetContentAlignmentLeftCenter:
+            case TZSheetContentAlignmentCenter:
+            case TZSheetContentAlignmentRightCenter:
+                originY = frame.size.height/2 - viewFrame.size.height/2;
+                break;
+            case TZSheetContentAlignmentLeftBottom:
+            case TZSheetContentAlignmentCenterBottom:
+            case TZSheetContentAlignmentRightBottom:
+                originY = frame.size.height - viewFrame.size.height;
+            default:
+                break;
+        }
 
-        rect = CGRectMake(rect.origin.x, viewFrame.origin.y, viewFrame.size.width, viewFrame.size.height);
-        [view setFrame:rect];
-    
-        rect = CGRectMake(rect.origin.x + rect.size.width + _contentSpacing, rect.origin.y, rect.size.width, rect.size.height);
+        viewFrame.origin = CGPointMake(originX, originY);
+        [view setFrame:viewFrame];
+        originX += viewFrame.size.width + _contentSpacing;
     }
 }
 
 #pragma mark - Setter and getter
 
 
-
 - (void)setFont:(UIFont *)font
 {
     _font = font;
-//    [self setConfigText:[self configText]];
+
     for (UIView *view in [self subviews]) {
         if ([view isKindOfClass:[UILabel class]]) {
             UILabel *label = (UILabel *)view;
@@ -128,7 +143,7 @@
     }
 }
 
-- (void)setAlignment:(TZSheetViewTextAlignment)alignment
+- (void)setAlignment:(TZSheetContentAlignment)alignment
 {
     _alignment = alignment;
     [self setNeedsLayout];
@@ -158,18 +173,15 @@
         if (index != -1) {
             NSString *iconName = [componentText substringFromIndex:index+1];
             iconName = [NSString stringWithFormat:@"%@.png", iconName];
+#if QCImageManagerUsed
+            UIImage *iconImage = [QCImageManager imageNamed:iconName];
+#elif 
             UIImage *iconImage = [UIImage imageNamed:iconName];
+#endif
             UIImageView *icon = [[UIImageView alloc] initWithImage:iconImage];
             [icon setTag:i*kEntryComponentTagIncre+1];
             [self addSubview:icon];
-            [icon setCenter:CGPointMake(icon.frame.origin.x + icon.frame.size.width/2, self.frame.size.height/2)];
-            CGSize iconSize = [iconImage size];
-            float iconHeight = iconSize.height;
-            if (iconHeight > _contentFrame.size.height) {
-                iconHeight = _contentFrame.size.height;
-            }
-            [icon setFrame:CGRectMake(0, 0, iconSize.width, iconHeight)];
-
+            
         } else {
             UILabel *label = [[UILabel alloc] initWithFrame:CGRectZero];
             [label setFont:_font];
@@ -177,20 +189,14 @@
             [label setTextColor:_textColor];
             [label setTextAlignment:NSTextAlignmentCenter];
             [label setBackgroundColor:[UIColor clearColor]];
-            CGSize textSize = [componentText sizeWithFont:_font];
-            textSize = CGSizeMake(textSize.width + 2, textSize.height + 2);
-            CGRect rect;
-            if (textSize.width > _contentFrame.size.width) {
-                textSize.width = _contentFrame.size.width;
-                rect = CGRectMake(_contentEdgeInsets.left, _contentEdgeInsets.right, textSize.width, 0);
-                [label setFrame:rect];
-                [label setNumberOfLines:0];
-                [label sizeToFit];
-            } else {
-                rect = CGRectMake(_contentEdgeInsets.left, _contentEdgeInsets.right, textSize.width, textSize.height);
-                [label setFrame:rect];
-//                CGPoint center = CGPointMake(rect.origin.x + rect.size.width/2, self.frame.size.height/2);
-//                [label setCenter:center];
+            [label sizeToFit];
+            
+            if (label.frame.size.width > _contentFrame.size.width) {
+                if (_contentShouldAutoBreakline) {
+                    [label setFrame:CGRectMake(0, 0, _contentFrame.size.width, 0)];
+                    [label setNumberOfLines:0];
+                    [label sizeToFit];
+                }
             }
             
             [label setTextColor:_textColor];
@@ -256,12 +262,12 @@
     _rowSpace = 0.0f;
     _columnSpace = 0.0f;
     
-    _horizontalHeaderAlignment = TZSheetViewTextAlignmentCenter;
-    _verticalHeaderAlignment = TZSheetViewTextAlignmentCenter;
+    _contentAlignment = TZSheetContentAlignmentCenter;
+    _horizontalHeaderAlignment = TZSheetContentAlignmentCenter;
+    _verticalHeaderAlignment = TZSheetContentAlignmentCenter;
     _needHorizontalHeader = NO;
     _needVerticalHeader = NO;
 
-    _contentAlignment = TZSheetViewTextAlignmentLeft;
     _contentFont = [UIFont systemFontOfSize:[UIFont systemFontSize]];
     _headerFont = [UIFont systemFontOfSize:[UIFont systemFontSize]];
     _contentTextColor = [UIColor whiteColor];
@@ -276,9 +282,8 @@
     _verticalHeaderBackgroundView = [[UIImageView alloc] initWithFrame:CGRectZero];
     [self addSubview:_verticalHeaderBackgroundView];
     
-    
-    
 }
+
 
 - (id)initWithFrame:(CGRect)frame
 {
@@ -320,17 +325,19 @@
         for (int column = 0; column < sheetWidth; column++) {
             int index = sheetWidth * row + column;
             TZSheetEntry *entry;
+            CGRect entryFrame = CGRectMake(column * entryWidth, row * entryHeight, entryWidth, entryHeight);
             if (index < [_sheetEntries count]) {
                 entry = [_sheetEntries objectAtIndex:index];
+                [entry setFrame:entryFrame];
             } else {
-                CGRect entryFrame = CGRectMake(column * entryWidth, row * entryHeight, entryWidth, entryHeight);
+                
                 entry = [[TZSheetEntry alloc] initWithFrame:entryFrame];
                 [self addSubview:entry];
                 [_sheetEntries addObject:entry];
             }
             
 //            [entry setFrame:entryFrame];
-            
+            [entry setAlignment:_contentAlignment];
             [entry setContentEdgeInsets:_entryEdgeInsets];
             [entry setFont:_contentFont];
             
@@ -343,12 +350,8 @@
             if ([_dataSource respondsToSelector:@selector(sheetView:textColorForEntryAtIndexPath:)]) {
                 _contentTextColor = [_dataSource sheetView:self textColorForEntryAtIndexPath:indexPath];
             }
-            [entry setTextColor:_contentTextColor];
             
-            if ([_dataSource respondsToSelector:@selector(sheetView:textColorForEntryAtIndexPath:)]) {
-                _contentAlignment = [_dataSource sheetView:self textAlignmentForEntryAtIndexPath:indexPath];
-            }
-            [entry setAlignment:_contentAlignment];
+            [entry setTextColor:_contentTextColor];
 
             if ([_dataSource respondsToSelector:@selector(sheetView:configTextForEntryAtIndexPath:)]) {
                 NSString *configText = [_dataSource sheetView:self configTextForEntryAtIndexPath:indexPath];
@@ -363,7 +366,14 @@
 
 #pragma mark - Setter and getter
 
-- (void)setContentAlignment:(TZSheetViewTextAlignment)contentAlignment
+- (void)setContentShouldAutoBreakline:(BOOL)contentShouldAutoBreakline
+{
+    _contentShouldAutoBreakline = contentShouldAutoBreakline;
+    
+    [self setNeedsLayout];
+}
+
+- (void)setContentAlignment:(TZSheetContentAlignment)contentAlignment
 {
     _contentAlignment = contentAlignment;
     for (int i = 0; i < [_sheetEntries count]; i++) {
@@ -372,7 +382,7 @@
     }
 }
 
-- (void)setHorizontalHeaderAlignment:(TZSheetViewTextAlignment)horizontalHeaderAlignment
+- (void)setHorizontalHeaderAlignment:(TZSheetContentAlignment)horizontalHeaderAlignment
 {
     _horizontalHeaderAlignment = horizontalHeaderAlignment;
     
@@ -384,7 +394,7 @@
     }
 }
 
-- (void)setVerticalHeaderAlignment:(TZSheetViewTextAlignment)verticalHeaderAlignment
+- (void)setVerticalHeaderAlignment:(TZSheetContentAlignment)verticalHeaderAlignment
 {
     _verticalHeaderAlignment = verticalHeaderAlignment;
     
@@ -416,7 +426,7 @@
     [self insertSubview:_verticalHeaderBackgroundView aboveSubview:_horizontalHeaderBackgroundView];
 }
 
-#pragma mark - Interface
+#pragma mark - Entry Accessor
 
 - (TZSheetEntry *)entryForIndexPath:(NSIndexPath *)indexPath
 {
@@ -431,7 +441,10 @@
     column = _needVerticalHeader ? column - 1 : column;
 
     int index = _size.width * row + column;
-    TZSheetEntry *entry = [_sheetEntries objectAtIndex:index];
+    TZSheetEntry *entry = nil;
+    if (index < _sheetEntries.count) {
+        entry = [_sheetEntries objectAtIndex:index];
+    }
     return entry;
 }
 
@@ -471,21 +484,43 @@
 
 - (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
 {
-    UITouch *touch = [touches anyObject];
-    CGPoint loc = [touch locationInView:self];
-    for (TZSheetEntry *entry in _sheetEntries) {
-        if (CGRectContainsPoint(entry.frame, loc)) {
-            if ([_delegate respondsToSelector:@selector(sheetView:didSelectedEntryAtIndexPath:)]) {
-                [_delegate sheetView:self didSelectedEntryAtIndexPath:entry.indexPath];
+    if (self.userInteractionEnabled) {
+        UITouch *touch = [touches anyObject];
+        CGPoint loc = [touch locationInView:self];
+        for (TZSheetEntry *entry in _sheetEntries) {
+            if (CGRectContainsPoint(entry.frame, loc)) {
+                if ([_delegate respondsToSelector:@selector(sheetView:didSelectedEntryAtIndexPath:)]) {
+                    [_delegate sheetView:self didSelectedEntryAtIndexPath:entry.indexPath];
+                    
+                }
                 
             }
-            
         }
+    } else {
+        return [super touchesEnded:touches withEvent:event];
     }
 }
 
 
 @end
+
+@implementation NSIndexPath (TZSheetView)
+
++ (NSIndexPath *)indexPathForRow:(NSInteger)row andColumn:(NSInteger)column
+{
+    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:row inSection:column];
+    
+    return indexPath;
+}
+
+- (NSInteger)column
+{
+    return self.section;
+}
+
+@end
+
+#pragma mark - Deprecated
 
 @implementation TZSheetView (Deprecated)
 
@@ -541,23 +576,6 @@
     if (entry) {
         [entry setConfigText:configText];
     }
-}
-
-
-@end
-
-@implementation NSIndexPath (TZSheetView)
-
-+ (NSIndexPath *)indexPathForRow:(NSInteger)row andColumn:(NSInteger)column
-{
-    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:row inSection:column];
-    
-    return indexPath;
-}
-
-- (NSInteger)column
-{
-    return self.section;
 }
 
 @end

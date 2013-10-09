@@ -6,24 +6,23 @@
 //  Copyright (c) 2013年 QomoCorp co.Ltd. All rights reserved.
 //
 
-
-
-// Enable debug model to draw entry frame of sheet view
-#define DEBUG_ENVIROMENT        0 
 // Set the helper char to parse config text here
 #define SEPARATOR               '|'
 #define ICON_INDICATOR          '@'
-#define UIView_INDICATOR        '*'
 
 #import <UIKit/UIKit.h>
 
 typedef enum {
-    TZSheetViewTextAlignmentLeft = 0, // contents left aligned
-    TZSheetViewTextAlignmentCenter, // contents center aligned
-    TZSheetViewTextAlignmentRight, // contents right aligned
-} TZSheetViewTextAlignment;
-
-
+    TZSheetContentAlignmentLeftTop = 0,
+    TZSheetContentAlignmentLeftCenter,
+    TZSheetContentAlignmentLeftBottom,
+    TZSheetContentAlignmentCenterTop,
+    TZSheetContentAlignmentCenter,
+    TZSheetContentAlignmentCenterBottom,
+    TZSheetContentAlignmentRightTop,
+    TZSheetContentAlignmentRightCenter,
+    TZSheetContentAlignmentRightBottom
+} TZSheetContentAlignment;
 
 @interface TZSheetEntry : UIView
 {
@@ -32,14 +31,16 @@ typedef enum {
 }
 
 @property (nonatomic, copy) NSString *configText; // config texts will be rendered as UILabel and UIImageView
-@property (nonatomic, assign) TZSheetViewTextAlignment alignment; // default is QCSheetContentAlignmentCenter;
-@property (nonatomic, assign) UIEdgeInsets contentEdgeInsets; // default is {2, 2, 2, 2} on iPad, half on iPhone
-@property (nonatomic, assign) CGFloat contentSpacing; // defalut is 10 on iPad, half on iPhone
+@property (nonatomic, assign) TZSheetContentAlignment alignment; // default is TZSheetContentAlignmentCenter
+@property (nonatomic, assign) UIEdgeInsets contentEdgeInsets; // default is {2, 2, 2, 2}
+@property (nonatomic, assign) CGFloat contentSpacing; // defalut is 10
 
-@property (nonatomic, strong) UIFont *font; // default is system font of 12
+@property (nonatomic, strong) UIFont *font; // default is system font With labelFontSize
 
 @property (nonatomic, strong) UIColor *textColor; // default is black
 @property (nonatomic, strong) NSIndexPath *indexPath; // coordinate in sheet view
+@property (nonatomic, assign) BOOL contentShouldAutoBreakline;
+
 @end
 
 @class TZSheetView;
@@ -52,9 +53,10 @@ typedef enum {
 // sheet view may be constructed from labels parsed by config text or concrete UIControls. AND the horizontal header entrys have index path with row = -1, while the vertical header entries have index path with column = -1;
 - (NSString *)sheetView:(TZSheetView *)sheetView configTextForEntryAtIndexPath:(NSIndexPath *)indexPath;
 
-- (UIColor *)sheetView:(TZSheetView *)sheetView textColorForEntryAtIndexPath:(NSIndexPath *)indexPath;
-- (TZSheetViewTextAlignment)sheetView:(TZSheetView *)sheetView textAlignmentForEntryAtIndexPath:(NSIndexPath *)indexPath;
 @optional
+- (UIColor *)sheetView:(TZSheetView *)sheetView textColorForEntryAtIndexPath:(NSIndexPath *)indexPath;
+
+
 
 @end
 
@@ -67,9 +69,9 @@ typedef enum {
 
 @interface TZSheetView : UIView
 {
-    TZSheetViewTextAlignment _contentAlignment;
-    TZSheetViewTextAlignment _horizontalHeaderAlignment;
-    TZSheetViewTextAlignment _verticalHeaderAlignment;
+    TZSheetContentAlignment _contentHorizontalAlignment;
+    TZSheetContentAlignment _horizontalHeaderAlignment;
+    TZSheetContentAlignment _verticalHeaderAlignment;
     NSMutableArray *_horizontalHearders;
     NSMutableArray *_verticalHeaders;
     NSMutableArray *_sheetEntries; // this is a 2d array
@@ -91,11 +93,11 @@ typedef enum {
 @property (nonatomic, strong) UIColor *contentTextColor;
 @property (nonatomic, assign) BOOL needHorizontalHeader; // default is NO, set YES there will be one more row entrys for headers
 @property (nonatomic, assign) BOOL needVerticalHeader; // default is NO, set YES there will be one more column entrys for headers
-@property (nonatomic, assign) TZSheetViewTextAlignment contentAlignment; // Default is QCSheetContentAlignmentLeft
-@property (nonatomic, assign) TZSheetViewTextAlignment horizontalHeaderAlignment; // This property determine the content alignment of horizontal header. Default is QCSheetContentAlignmentCenter
-@property (nonatomic, assign) TZSheetViewTextAlignment verticalHeaderAlignment; // This property determine the content alignment of vertical header. Default is QCSheetContentAlignmentCenter QCSheetContentAlignmentCenter
-@property (nonatomic, assign) UIEdgeInsets contentEdgeInsets; // default is {0, 0, 0, 0} on iPad
-@property (nonatomic, assign) UIEdgeInsets entryEdgeInsets; // default is {2, 2, 2, 2} on iPad
+@property (nonatomic, assign) TZSheetContentAlignment contentAlignment;
+@property (nonatomic, assign) TZSheetContentAlignment horizontalHeaderAlignment;
+@property (nonatomic, assign) TZSheetContentAlignment verticalHeaderAlignment;
+@property (nonatomic, assign) UIEdgeInsets contentEdgeInsets; // default is {0, 0, 0, 0}
+@property (nonatomic, assign) UIEdgeInsets entryEdgeInsets; // default is {2, 2, 2, 2}
 
 @property (nonatomic, strong) UIImage *backgroundImage;
 
@@ -103,8 +105,11 @@ typedef enum {
 @property (nonatomic, strong) UIImage *horizontalHeaderBackgroundImage; 
 @property (nonatomic, strong) UIImage *verticalHeaderBackgroundImage;
 
+@property (nonatomic, assign) BOOL contentShouldAutoBreakline;
+
 - (void)reloadData;
 
+// These methods can only be invoked after reloadData being called
 - (TZSheetEntry *)entryForIndexPath:(NSIndexPath *)indexPath;
 - (TZSheetEntry *)entryAtRow:(NSInteger)row andColumn:(NSInteger)column;
 
