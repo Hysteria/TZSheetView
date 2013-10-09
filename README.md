@@ -19,4 +19,4 @@ TZSheetView can be easily used similar to the way you use UITableView.
 - '|' means separator, each part separated would be text of UILabel.
 - '@' means icon indicator, followed by icon file name, then rendered as UIImageView with height of the entry.
 
-##See more in the codes.
+##See more in the codes and DEMO
