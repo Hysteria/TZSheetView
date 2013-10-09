@@ -36,31 +36,28 @@
     [self.view addSubview:self.sheetView1];
     [self.sheetView1 setDelegate:self];
     [self.sheetView1 setDataSource:self];
-//    [self.sheetView1 setContentTextColor:[UIColor lightTextColor]];
+    [self.sheetView1 setContentFont:[UIFont systemFontOfSize:9.0]];
     
-    self.sheetView2 = [[TZSheetView alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height * 0.2, self.view.frame.size.width, self.view.frame.size.height * 0.1)];
+    self.sheetView2 = [[TZSheetView alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height * 0.15, self.view.frame.size.width, self.view.frame.size.height * 0.1)];
     [self.view addSubview:self.sheetView2];
     [self.sheetView2 setDelegate:self];
     [self.sheetView2 setDataSource:self];
-//    [self.sheetView2 setContentTextColor:[UIColor lightTextColor]];
+    [self.sheetView2 setContentFont:[UIFont systemFontOfSize:9.0]];
     
-    self.sheetView3 = [[TZSheetView alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height * 0.4, self.view.frame.size.width, self.view.frame.size.height * 0.2)];
+    self.sheetView3 = [[TZSheetView alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height * 0.3, self.view.frame.size.width, self.view.frame.size.height * 0.2)];
     [self.view addSubview:self.sheetView3];
     [self.sheetView3 setDelegate:self];
     [self.sheetView3 setDataSource:self];
+    [self.sheetView3 setContentFont:[UIFont systemFontOfSize:9.0]];
     
-    self.sheetView4 = [[TZSheetView alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height * 0.6, self.view.frame.size.width, self.view.frame.size.height * 0.2)];
+    self.sheetView4 = [[TZSheetView alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height * 0.55, self.view.frame.size.width, self.view.frame.size.height * 0.2)];
     [self.view addSubview:self.sheetView4];
     [self.sheetView4 setDelegate:self];
     [self.sheetView4 setDataSource:self];
     [self.sheetView4 setNeedHorizontalHeader:YES];
     [self.sheetView4 setNeedVerticalHeader:YES];
-    
-    UIButton *button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [self.view addSubview:button];
-    [button setFrame:CGRectMake(self.view.frame.size.width * 0.5 - 50, self.view.frame.size.height * 0.9, 100, 30)];
-    [button setTitle:@"Deprecated" forState:UIControlStateNormal];
-    [button addTarget:self action:@selector(onTest) forControlEvents:UIControlEventTouchUpInside];
+    [self.sheetView4 setContentFont:[UIFont systemFontOfSize:9.0]];
+
     
 }
 
@@ -77,23 +74,7 @@
     // Dispose of any resources that can be recreated.
 }
 
-- (void)onTest
-{
-    [self testForDeprecatedMethods];
-}
 
-- (void)testForDeprecatedMethods
-{
-    [self.sheetView1 setConfigTextForEntry:@"Test set entry" atRow:0 andColumn:0];
-    [self.sheetView1 setConfigTexts:[NSArray arrayWithObjects:@"Test set column 0", @"Test set column 0" ,nil] atColumn:0];
-    [self.sheetView2 setConfigTexts:[NSArray arrayWithObjects:@"Test set row 0", @"Test set row 0" ,nil] atRow:0];
-    
-    [self.sheetView3 setConfigTexts:[NSArray arrayWithObjects:@"Test set row 1", @"Test set row 1" ,nil] atRow:1];
-    [self.sheetView3 setConfigTexts:[NSArray arrayWithObjects:@"Test set column 1", @"Test set column 1" ,nil] atColumn:1];
-    
-    [self.sheetView4 setConfigTextsForHorizontalHeader:[NSArray arrayWithObjects:@"hh0", @"hh1", @"hh2" ,nil]];
-    [self.sheetView4 setConfigTextsForVerticalHeader:[NSArray arrayWithObjects:@"vh0", @"vh1", @"vh2",nil]];
-}
 
 - (CGSize)sizeOfSheetView:(TZSheetView *)sheetView
 {

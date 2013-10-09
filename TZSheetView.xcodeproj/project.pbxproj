@@ -339,6 +339,7 @@
 				CB1AA56A174B581700EB572F /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
