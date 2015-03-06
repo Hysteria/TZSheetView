@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A51E9A5D181A4A93008268BA /* TTTAttributedLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = A51E9A5C181A4A93008268BA /* TTTAttributedLabel.m */; };
+		A51E9A61181A4AAF008268BA /* ColorUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = A51E9A60181A4AAF008268BA /* ColorUtils.m */; };
+		A51E9A63181A4B0A008268BA /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A51E9A62181A4B0A008268BA /* CoreText.framework */; };
 		CB1AA54F174B581700EB572F /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB1AA54E174B581700EB572F /* UIKit.framework */; };
 		CB1AA551174B581700EB572F /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB1AA550174B581700EB572F /* Foundation.framework */; };
 		CB1AA553174B581700EB572F /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB1AA552174B581700EB572F /* CoreGraphics.framework */; };
@@ -27,6 +30,11 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		A51E9A5B181A4A93008268BA /* TTTAttributedLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TTTAttributedLabel.h; sourceTree = "<group>"; };
+		A51E9A5C181A4A93008268BA /* TTTAttributedLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TTTAttributedLabel.m; sourceTree = "<group>"; };
+		A51E9A5F181A4AAF008268BA /* ColorUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ColorUtils.h; sourceTree = "<group>"; };
+		A51E9A60181A4AAF008268BA /* ColorUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ColorUtils.m; sourceTree = "<group>"; };
+		A51E9A62181A4B0A008268BA /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
 		CB1AA54B174B581700EB572F /* TZSheetView.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TZSheetView.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CB1AA54E174B581700EB572F /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		CB1AA550174B581700EB572F /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -57,6 +65,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A51E9A63181A4B0A008268BA /* CoreText.framework in Frameworks */,
 				CB1AA54F174B581700EB572F /* UIKit.framework in Frameworks */,
 				CB1AA551174B581700EB572F /* Foundation.framework in Frameworks */,
 				CB1AA553174B581700EB572F /* CoreGraphics.framework in Frameworks */,
@@ -66,10 +75,32 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		A51E9A5A181A4A93008268BA /* TTTAttributedLabel */ = {
+			isa = PBXGroup;
+			children = (
+				A51E9A5B181A4A93008268BA /* TTTAttributedLabel.h */,
+				A51E9A5C181A4A93008268BA /* TTTAttributedLabel.m */,
+			);
+			name = TTTAttributedLabel;
+			path = TZSheetView/TTTAttributedLabel;
+			sourceTree = "<group>";
+		};
+		A51E9A5E181A4AAF008268BA /* ColorUtils */ = {
+			isa = PBXGroup;
+			children = (
+				A51E9A5F181A4AAF008268BA /* ColorUtils.h */,
+				A51E9A60181A4AAF008268BA /* ColorUtils.m */,
+			);
+			name = ColorUtils;
+			path = TZSheetView/ColorUtils;
+			sourceTree = "<group>";
+		};
 		CB1AA542174B581700EB572F = {
 			isa = PBXGroup;
 			children = (
 				CB1AA57D174B64DC00EB572F /* README.md */,
+				A51E9A5E181A4AAF008268BA /* ColorUtils */,
+				A51E9A5A181A4A93008268BA /* TTTAttributedLabel */,
 				CB1AA554174B581700EB572F /* TZSheetView */,
 				CB1AA54D174B581700EB572F /* Frameworks */,
 				CB1AA54C174B581700EB572F /* Products */,
@@ -87,6 +118,7 @@
 		CB1AA54D174B581700EB572F /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				A51E9A62181A4B0A008268BA /* CoreText.framework */,
 				CB1AA54E174B581700EB572F /* UIKit.framework */,
 				CB1AA550174B581700EB572F /* Foundation.framework */,
 				CB1AA552174B581700EB572F /* CoreGraphics.framework */,
@@ -218,7 +250,9 @@
 				CB1AA55B174B581700EB572F /* main.m in Sources */,
 				CB1AA55F174B581700EB572F /* TZAppDelegate.m in Sources */,
 				CB1AA579174B583400EB572F /* TZSheetView.m in Sources */,
+				A51E9A61181A4AAF008268BA /* ColorUtils.m in Sources */,
 				CB1AA57C174B583F00EB572F /* TZSheetViewController.m in Sources */,
+				A51E9A5D181A4A93008268BA /* TTTAttributedLabel.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

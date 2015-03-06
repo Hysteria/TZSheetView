@@ -7,19 +7,18 @@
 //
 
 #import "TZSheetView.h"
+#import "TTTAttributedLabel.h"
+#import "ColorUtils.h"
+#import <objc/runtime.h>
 #import <QuartzCore/QuartzCore.h>
 
 #define kEntryComponentTagIncre 111
 
-@implementation TZSheetEntry
+@interface TZSheetEntry ()
 
-@synthesize configText = _configText;
-@synthesize alignment = _alignment;
-@synthesize contentEdgeInsets = _contentEdgeInsets;
-@synthesize contentSpacing = _contentSpacing;
-@synthesize font = _font;
-@synthesize textColor = _textColor;
-@synthesize indexPath = _indexPath;
+@end
+
+@implementation TZSheetEntry
 
 - (id)initWithFrame:(CGRect)frame
 {
@@ -36,10 +35,11 @@
 #endif
         _alignment = TZSheetContentAlignmentCenter;
         _contentEdgeInsets = UIEdgeInsetsMake(2, 2, 2, 2);
-        _contentSpacing = 10;
+        _contentSpacing = 0;
         _textColor = [UIColor blackColor];
         
-        _font = [UIFont systemFontOfSize:[UIFont systemFontSize]];
+        _font = [UIFont systemFontOfSize:[UIFont labelFontSize]];
+    
     }
     return self;
 }
@@ -161,10 +161,7 @@
         [view removeFromSuperview];
     }
     
-    unichar s[1];
-    s[0] = SEPARATOR;
-    NSString *separator = [NSString stringWithCharacters:s length:1];
-    NSArray *componentTexts = [text componentsSeparatedByString:separator];
+    NSArray *componentTexts = [text componentsSeparatedByString:SEPARATOR];
     _componentCount = [componentTexts count];
     for (int i = 0; i < _componentCount; i++) {
         NSString *componentText = [componentTexts objectAtIndex:i];
@@ -172,20 +169,75 @@
         if (index != -1) {
             NSString *iconName = [componentText substringFromIndex:index+1];
             iconName = [NSString stringWithFormat:@"%@.png", iconName];
-
+//#if QCImageManagerUsed
+//            UIImage *iconImage = [QCImageManager imageNamed:iconName];
+//#elif 
             UIImage *iconImage = [UIImage imageNamed:iconName];
-
+//#endif
             UIImageView *icon = [[UIImageView alloc] initWithImage:iconImage];
             [icon setTag:i*kEntryComponentTagIncre+1];
             [self addSubview:icon];
             
         } else {
-            UILabel *label = [[UILabel alloc] initWithFrame:CGRectZero];
+            TTTAttributedLabel *label = [[TTTAttributedLabel alloc] initWithFrame:CGRectZero];
             [label setFont:_font];
-            [label setText:componentText];
             [label setTextColor:_textColor];
             [label setTextAlignment:NSTextAlignmentCenter];
             [label setBackgroundColor:[UIColor clearColor]];
+            // Parse color configs
+            [label setText:componentText afterInheritingLabelAttributesAndConfiguringWithBlock:^NSMutableAttributedString *(NSMutableAttributedString *mutableAttributedString) {
+                NSRange stringRange = NSMakeRange(0, [mutableAttributedString length]);
+                
+                __block NSRange lastColorRange;
+                __block UIColor *lastColor = nil;
+                NSMutableArray *rangesToMove = [NSMutableArray array];
+                NSRegularExpression *regexp = ParenthesisRegularExpression();
+                [regexp enumerateMatchesInString:[mutableAttributedString string] options:0 range:stringRange usingBlock:^(NSTextCheckingResult *result, NSMatchingFlags flags, BOOL *stop) {
+                    
+                    NSMutableString *colorString = [NSMutableString stringWithString:[[mutableAttributedString string] substringWithRange:result.range]];
+                    
+                    [colorString deleteCharactersInRange:NSMakeRange(0, 1)];
+                    [colorString deleteCharactersInRange:NSMakeRange(colorString.length-1, 1)];
+             
+                    UIColor *color;
+                    if ([colorString hasPrefix:Color_INDICATOR]) {
+                        color = [UIColor colorWithString:colorString];
+                        
+                    } else {
+                        NSString *colorSELName = [NSString stringWithFormat:@"%@Color", colorString];
+                        SEL selector = NSSelectorFromString(colorSELName);
+                        if ([[UIColor class] respondsToSelector:selector]) {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
+                            color = (UIColor *)[[UIColor class] performSelector:selector];
+#pragma diagnostic pop
+                        }
+                    }
+
+                    if (color) {
+//                        if (lastColor) {
+                            NSRange colorRange = NSMakeRange(NSMaxRange(result.range), NSMaxRange(stringRange) - NSMaxRange(result.range));
+                            [mutableAttributedString removeAttribute:(NSString *)kCTForegroundColorAttributeName range:colorRange];
+                            [mutableAttributedString addAttribute:(NSString *)kCTForegroundColorAttributeName value:(__bridge id)[color CGColor] range:colorRange];
+                            
+//                            [rangesToMove addObject:[NSValue valueWithRange:lastColorRange]];
+                            [mutableAttributedString deleteCharactersInRange:result.range];
+//                        }
+                        
+//                        lastColor = color;
+//                        lastColorRange = result.range;
+                    }
+                   
+                }];
+                
+//                for (NSValue *v in rangesToMove) {
+//                    NSRange range = [v rangeValue];
+//                    [mutableAttributedString deleteCharactersInRange:range];
+//                }
+                
+                return mutableAttributedString;
+            }];
+            
             [label sizeToFit];
             
             if (label.frame.size.width > _contentFrame.size.width) {
@@ -216,30 +268,29 @@
     return -1;
 }
 
+//static inline NSRegularExpression * ColorRegularExpression() {
+//    static NSRegularExpression *_colorRRegularExpression = nil;
+//    static dispatch_once_t onceToken;
+//    dispatch_once(&onceToken, ^{
+//        _colorRRegularExpression = [[NSRegularExpression alloc] initWithPattern:@"\{[^}]*\}" options:NSRegularExpressionCaseInsensitive error:nil];
+//    });
+//    
+//    return _colorRRegularExpression;
+//}
+
+static inline NSRegularExpression * ParenthesisRegularExpression() {
+    static NSRegularExpression *_parenthesisRegularExpression = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        _parenthesisRegularExpression = [[NSRegularExpression alloc] initWithPattern:@"\\([^\\(\\)]+\\)" options:NSRegularExpressionCaseInsensitive error:nil];
+    });
+    
+    return _parenthesisRegularExpression;
+}
+
 @end
 
 @implementation TZSheetView
-
-@synthesize dataSource = _dataSource;
-@synthesize delegate = _delegate;
-@synthesize size = _size;
-@synthesize entrySize = _entrySize;
-@synthesize rowSpace = _rowSpace;
-@synthesize columnSpace = _columnSpace;
-@synthesize headerFont = _headerFont;
-@synthesize contentFont = _contentFont;
-@synthesize needHorizontalHeader = _needHorizontalHeader;
-@synthesize needVerticalHeader = _needVerticalHeader;
-@synthesize horizontalHeaderAlignment = _horizontalHeaderAlignment;
-@synthesize verticalHeaderAlignment = _verticalHeaderAlignment;
-@synthesize contentAlignment = _contentAlignment;
-@synthesize contentEdgeInsets = _contentEdgeInsets;
-@synthesize entryEdgeInsets = _entryEdgeInsets;
-@synthesize contentTextColor = _contentTextColor;
-@synthesize verticalHeaderBackgroundImage = _verticalHeaderBackgroundImage;
-@synthesize headerTextColor = _headerTextColor;
-@synthesize backgroundImage = _backgroundImage;
-@synthesize horizontalHeaderBackgroundImage = _horizontalHeaderBackgroundImage;
 
 - (void)dealloc
 {
@@ -321,19 +372,17 @@
     for (int row = 0; row < sheetHeight; row++) {
         for (int column = 0; column < sheetWidth; column++) {
             int index = sheetWidth * row + column;
+            CGRect entryFrame = CGRectMake(self.entryEdgeInsets.left + column * (entryWidth + self.columnSpace), self.entryEdgeInsets.top + row * (entryHeight + self.rowSpace), entryWidth, entryHeight);
             TZSheetEntry *entry;
-            CGRect entryFrame = CGRectMake(column * entryWidth, row * entryHeight, entryWidth, entryHeight);
             if (index < [_sheetEntries count]) {
                 entry = [_sheetEntries objectAtIndex:index];
                 [entry setFrame:entryFrame];
             } else {
-                
                 entry = [[TZSheetEntry alloc] initWithFrame:entryFrame];
                 [self addSubview:entry];
                 [_sheetEntries addObject:entry];
             }
-            
-//            [entry setFrame:entryFrame];
+
             [entry setAlignment:_contentAlignment];
             [entry setContentEdgeInsets:_entryEdgeInsets];
             [entry setFont:_contentFont];

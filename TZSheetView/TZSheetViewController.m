@@ -20,7 +20,7 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
-        self.configTexts1 = [NSArray arrayWithObjects:@"i have 999|@icon_gold|gold", @"u have 999|@icon_gem|gems", @"there is|@icon_iron|iron resource", @"he wants to eat|@icon_food", nil];
+        self.configTexts1 = [NSArray arrayWithObjects:@"@icon_gold|(red)what|(green)the|(blue)fuck|(#ff00ff)!!!", @"u have 999|@icon_gem|gems", @"there is|@icon_iron|iron resource", @"he wants to eat|@icon_food", nil];
         
             }
     return self;
@@ -112,20 +112,20 @@
     }
 }
 
-- (UIColor *)sheetView:(TZSheetView *)sheetView textColorForEntryAtIndexPath:(NSIndexPath *)indexPath
-{
-    if (indexPath.row == 0 && indexPath.column == 0) {
-        return [UIColor redColor];
-    } else if (indexPath.row == 0 && indexPath.column == 1) {
-        return [UIColor yellowColor];
-    } else if (indexPath.row == 1 && indexPath.column == 0) {
-        return [UIColor orangeColor];
-    } else if (indexPath.row == 1 && indexPath.column == 1) {
-        return [UIColor cyanColor];
-    } else {
-        return [UIColor purpleColor];
-    }
-}
+//- (UIColor *)sheetView:(TZSheetView *)sheetView textColorForEntryAtIndexPath:(NSIndexPath *)indexPath
+//{
+//    if (indexPath.row == 0 && indexPath.column == 0) {
+//        return [UIColor redColor];
+//    } else if (indexPath.row == 0 && indexPath.column == 1) {
+//        return [UIColor yellowColor];
+//    } else if (indexPath.row == 1 && indexPath.column == 0) {
+//        return [UIColor orangeColor];
+//    } else if (indexPath.row == 1 && indexPath.column == 1) {
+//        return [UIColor cyanColor];
+//    } else {
+//        return [UIColor purpleColor];
+//    }
+//}
 
 - (void)sheetView:(TZSheetView *)sheet didSelectedEntryAtIndexPath:(NSIndexPath *)indexPath
 {

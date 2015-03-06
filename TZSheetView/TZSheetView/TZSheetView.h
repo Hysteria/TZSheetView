@@ -6,14 +6,33 @@
 //  Copyright (c) 2013年 QomoCorp co.Ltd. All rights reserved.
 //
 
-// Debug mode to draw enties's border
-#define DEBUG_ENVIROMENT         1
-
-// Set the helper char to parse config text here
-#define SEPARATOR               '|'
-#define ICON_INDICATOR          '@'
-
 #import <UIKit/UIKit.h>
+
+#define QCImageManagerUsed      0
+// Set the helper char to parse config text here
+#define SEPARATOR               @"|"
+#define ICON_INDICATOR          '@'
+#define Color_INDICATOR         @"#"
+
+// Color key
+#define kColorNameBlack                 @"black"        // 0.0 white
+#define kColorNameDarkGray              @"darkGray"     // 0.333 white
+#define kColorNameLightGray             @"lightGray"    // 0.667 white
+#define kColorNameWhite                 @"white"        // 1.0 white
+#define kColorNameGray                  @"gray"         // 0.5 white
+#define kColorNameRed                   @"red"          // 1.0, 0.0, 0.0 RGB
+#define kColorNameGreen                 @"green"        // 0.0, 1.0, 0.0 RGB
+#define kColorNameBlue                  @"blue"         // 0.0, 0.0, 1.0 RGB
+#define kColorNameCyan                  @"cyan"         // 0.0, 1.0, 1.0 RGB
+#define kColorNameYellow                @"yellow"       // 1.0, 1.0, 0.0 RGB
+#define kColorNameMagenta               @"magenta"      // 1.0, 0.0, 1.0 RGB
+#define kColorNameOrange                @"orange"       // 1.0, 0.5, 0.0 RGB
+#define kColorNamePurple                @"purple"       // 0.5, 0.0, 0.5 RGB
+#define kColorNameBrown                 @"brown"        // 0.6, 0.4, 0.2 RGB
+
+// Config text Example
+
+// @"@icon_gold|{red}what{green]the{blue}fuck{#ff00ff}!!!"
 
 typedef enum {
     TZSheetContentAlignmentLeftTop = 0,
@@ -57,9 +76,8 @@ typedef enum {
 - (NSString *)sheetView:(TZSheetView *)sheetView configTextForEntryAtIndexPath:(NSIndexPath *)indexPath;
 
 @optional
+
 - (UIColor *)sheetView:(TZSheetView *)sheetView textColorForEntryAtIndexPath:(NSIndexPath *)indexPath;
-
-
 
 @end
 
@@ -89,7 +107,7 @@ typedef enum {
 @property (nonatomic, assign) CGSize entrySize;
 @property (nonatomic, assign) CGFloat rowSpace;
 @property (nonatomic, assign) CGFloat columnSpace;
-@property (nonatomic, assign) CGFloat componentSpace; // default is 10 on iPad
+@property (nonatomic, assign) CGFloat componentSpace;
 @property (nonatomic, strong) UIFont *headerFont;
 @property (nonatomic, strong) UIColor *headerTextColor;
 @property (nonatomic, strong) UIFont *contentFont;
@@ -100,7 +118,7 @@ typedef enum {
 @property (nonatomic, assign) TZSheetContentAlignment horizontalHeaderAlignment;
 @property (nonatomic, assign) TZSheetContentAlignment verticalHeaderAlignment;
 @property (nonatomic, assign) UIEdgeInsets contentEdgeInsets; // default is {0, 0, 0, 0}
-@property (nonatomic, assign) UIEdgeInsets entryEdgeInsets; // default is {2, 2, 2, 2}
+@property (nonatomic, assign) UIEdgeInsets entryEdgeInsets; // default is {0, 0, 0, 0}
 
 @property (nonatomic, strong) UIImage *backgroundImage;
 
